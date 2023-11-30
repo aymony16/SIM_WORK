@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package smartpower;
+
+// The status checking service definition.
+service StatusChecker {
+  // Checks the status
+  rpc CheckStatus (StatusRequest) returns (StatusReply) {}
+}
+
+// The request message for checking status.
+message StatusRequest {
+  string request = 1;
+}
+
+// The response message containing the status.
+message StatusReply {
+  string status = 1;
+}
+
+// The temperature checking service definition.
+service TemperatureChecker {
+  // Checks the temperature
+  rpc CheckTemperature (TemperatureRequest) returns (TemperatureReply) {}
+}
+
+// The request message for checking temperature.
+message TemperatureRequest {
+  string request = 1;
+}
+
+// The response message containing the temperature.
+message TemperatureReply {
+  string temperature = 1;
+}
+
+service SmartPowerService {
+  rpc CheckStatus (StatusRequest) returns (StatusReply) {}
+  rpc CheckTemperature (TemperatureRequest) returns (TemperatureReply) {}
+}

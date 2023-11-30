@@ -1,0 +1,33 @@
+{
+    "SmartPowerHardware": {
+        "cpu": "Xilinx12345",
+        "pwr_reg": 0.0,
+        "vgs": {
+            "vg1:": -3.5,
+            "vg2": -3.5,
+            "vg3": -3.5,
+            "vg4": -3.5,
+            "vg5": -3.5,
+            "vg6": -3.5
+        },
+        "lram": {
+            "eth": {
+                "ip": "10.10.10.10",
+                "port": "1234"
+            },
+            "reset": true,
+            "vg": -3.5
+        }
+    },
+
+    "SmartPowerSoftware": {
+        "petalinux": {
+            "os_version": "petalinux 2018.3",
+            "firmware_version": "1.0.0",
+            "build_version": "1.0.0",
+            "ip": "10.10.10.10",
+            "port": "50051",
+            "status": "running"
+        }
+    }
+}
