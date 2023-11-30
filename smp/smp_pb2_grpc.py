@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import smp_pb2 as smp__pb2
+import smp.smp_pb2 as smp__pb2
 
 
 class StatusCheckerStub(object):

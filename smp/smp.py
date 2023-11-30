@@ -17,7 +17,7 @@ from enum import Enum
 import paramiko
 from dataclasses import dataclass
 from concurrent import futures
-from smp_service import grpc, smp_pb2_grpc, StatusCheckerServicer
+from smp.smp_service import grpc, smp_pb2_grpc, StatusCheckerServicer
 
 
 def load_from_json(filename="smp.json"):

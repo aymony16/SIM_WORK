@@ -1,7 +1,7 @@
 import grpc
 from concurrent import futures
-import smp_pb2
-import smp_pb2_grpc
+import smp.smp_pb2 as smp_pb2
+import smp.smp_pb2_grpc as smp_pb2_grpc
 
 
 class StatusCheckerServicer(smp_pb2_grpc.StatusCheckerServicer):
