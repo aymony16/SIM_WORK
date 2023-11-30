@@ -1,5 +1,5 @@
 import pytest
-from smp import SmartPowerFPGA, PetalinuxStatus, SmartPowerError
+from smp.smp import SmartPowerFPGA, PetalinuxStatus, SmartPowerError
 
 
 @pytest.fixture
