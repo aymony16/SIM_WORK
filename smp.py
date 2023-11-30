@@ -141,7 +141,4 @@ class SmartPowerFPGA:
 
 if __name__ == "__main__":
     smp = SmartPowerFPGA.from_json()
-    print(smp.hw)
-    print(smp.sw)
     smp.boot_up(2)
-    print("done")
