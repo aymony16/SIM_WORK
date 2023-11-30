@@ -6,8 +6,7 @@ import smp_pb2 as smp__pb2
 
 
 class StatusCheckerStub(object):
-    """The status checking service definition.
-    """
+    """The status checking service definition."""
 
     def __init__(self, channel):
         """Constructor.
@@ -16,214 +15,65 @@ class StatusCheckerStub(object):
             channel: A grpc.Channel.
         """
         self.CheckStatus = channel.unary_unary(
-                '/smartpower.StatusChecker/CheckStatus',
-                request_serializer=smp__pb2.StatusRequest.SerializeToString,
-                response_deserializer=smp__pb2.StatusReply.FromString,
-                )
+            "/smartpower.StatusChecker/CheckStatus",
+            request_serializer=smp__pb2.StatusRequest.SerializeToString,
+            response_deserializer=smp__pb2.StatusReply.FromString,
+        )
 
 
 class StatusCheckerServicer(object):
-    """The status checking service definition.
-    """
+    """The status checking service definition."""
 
     def CheckStatus(self, request, context):
-        """Checks the status
-        """
+        """Checks the status"""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
 
 
 def add_StatusCheckerServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'CheckStatus': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckStatus,
-                    request_deserializer=smp__pb2.StatusRequest.FromString,
-                    response_serializer=smp__pb2.StatusReply.SerializeToString,
-            ),
+        "CheckStatus": grpc.unary_unary_rpc_method_handler(
+            servicer.CheckStatus,
+            request_deserializer=smp__pb2.StatusRequest.FromString,
+            response_serializer=smp__pb2.StatusReply.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'smartpower.StatusChecker', rpc_method_handlers)
+        "smartpower.StatusChecker", rpc_method_handlers
+    )
     server.add_generic_rpc_handlers((generic_handler,))
 
 
- # This class is part of an EXPERIMENTAL API.
+# This class is part of an EXPERIMENTAL API.
 class StatusChecker(object):
-    """The status checking service definition.
-    """
+    """The status checking service definition."""
 
     @staticmethod
-    def CheckStatus(request,
+    def CheckStatus(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
             target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/smartpower.StatusChecker/CheckStatus',
+            "/smartpower.StatusChecker/CheckStatus",
             smp__pb2.StatusRequest.SerializeToString,
             smp__pb2.StatusReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-
-class TemperatureCheckerStub(object):
-    """The temperature checking service definition.
-    """
-
-    def __init__(self, channel):
-        """Constructor.
-
-        Args:
-            channel: A grpc.Channel.
-        """
-        self.CheckTemperature = channel.unary_unary(
-                '/smartpower.TemperatureChecker/CheckTemperature',
-                request_serializer=smp__pb2.TemperatureRequest.SerializeToString,
-                response_deserializer=smp__pb2.TemperatureReply.FromString,
-                )
-
-
-class TemperatureCheckerServicer(object):
-    """The temperature checking service definition.
-    """
-
-    def CheckTemperature(self, request, context):
-        """Checks the temperature
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-
-def add_TemperatureCheckerServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-            'CheckTemperature': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckTemperature,
-                    request_deserializer=smp__pb2.TemperatureRequest.FromString,
-                    response_serializer=smp__pb2.TemperatureReply.SerializeToString,
-            ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-            'smartpower.TemperatureChecker', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
- # This class is part of an EXPERIMENTAL API.
-class TemperatureChecker(object):
-    """The temperature checking service definition.
-    """
-
-    @staticmethod
-    def CheckTemperature(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/smartpower.TemperatureChecker/CheckTemperature',
-            smp__pb2.TemperatureRequest.SerializeToString,
-            smp__pb2.TemperatureReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-
-class SmartPowerServiceStub(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def __init__(self, channel):
-        """Constructor.
-
-        Args:
-            channel: A grpc.Channel.
-        """
-        self.CheckStatus = channel.unary_unary(
-                '/smartpower.SmartPowerService/CheckStatus',
-                request_serializer=smp__pb2.StatusRequest.SerializeToString,
-                response_deserializer=smp__pb2.StatusReply.FromString,
-                )
-        self.CheckTemperature = channel.unary_unary(
-                '/smartpower.SmartPowerService/CheckTemperature',
-                request_serializer=smp__pb2.TemperatureRequest.SerializeToString,
-                response_deserializer=smp__pb2.TemperatureReply.FromString,
-                )
-
-
-class SmartPowerServiceServicer(object):
-    """Missing associated documentation comment in .proto file."""
-
-    def CheckStatus(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def CheckTemperature(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-
-def add_SmartPowerServiceServicer_to_server(servicer, server):
-    rpc_method_handlers = {
-            'CheckStatus': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckStatus,
-                    request_deserializer=smp__pb2.StatusRequest.FromString,
-                    response_serializer=smp__pb2.StatusReply.SerializeToString,
-            ),
-            'CheckTemperature': grpc.unary_unary_rpc_method_handler(
-                    servicer.CheckTemperature,
-                    request_deserializer=smp__pb2.TemperatureRequest.FromString,
-                    response_serializer=smp__pb2.TemperatureReply.SerializeToString,
-            ),
-    }
-    generic_handler = grpc.method_handlers_generic_handler(
-            'smartpower.SmartPowerService', rpc_method_handlers)
-    server.add_generic_rpc_handlers((generic_handler,))
-
-
- # This class is part of an EXPERIMENTAL API.
-class SmartPowerService(object):
-    """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def CheckStatus(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/smartpower.SmartPowerService/CheckStatus',
-            smp__pb2.StatusRequest.SerializeToString,
-            smp__pb2.StatusReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def CheckTemperature(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/smartpower.SmartPowerService/CheckTemperature',
-            smp__pb2.TemperatureRequest.SerializeToString,
-            smp__pb2.TemperatureReply.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+        )

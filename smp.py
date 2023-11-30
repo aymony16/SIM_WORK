@@ -16,12 +16,14 @@ import threading
 from enum import Enum
 import paramiko
 from dataclasses import dataclass
-from smp_service import SmartPowerClient
+from concurrent import futures
+from smp_service import grpc, smp_pb2_grpc, StatusCheckerServicer
 
 
-def load_from_json(filename='smp.json'):
+def load_from_json(filename="smp.json"):
     with open(filename) as f:
         return json.load(f)
+
 
 ########### Petalinux ###############
 
@@ -33,17 +35,30 @@ class Petalinux:
         self.status: PetalinuxStatus = PetalinuxStatus.BOOTING
         self.threads = {}
         self.threads.update(
-            {"boot_up": threading.Thread(target=self.__boot_up)})
+            {
+                "boot_up": threading.Thread(target=self.__boot_up),
+                "grpc_server": threading.Thread(target=self.serve),
+            }
+        )
 
     def __boot_up(self):
         time.sleep(20)
-        SmartPowerClient().check_status()
         self.status = PetalinuxStatus.RUNNING
         print("booted up")
 
     def update_build(self, build):
         # Todo: add ssh session to get ssh key and then put correct build files then reboot command
         pass
+
+    def serve():
+        server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+        smp_pb2_grpc.add_StatusCheckerServicer_to_server(
+            StatusCheckerServicer(), server
+        )
+        server.add_insecure_port("[::]:50051")
+        print("Starting server...")
+        server.start()
+        server.wait_for_termination()
 
     def __repr__(self) -> str:
         return str(self.__class__) + ": " + str(self.__dict__)
@@ -74,14 +89,15 @@ class SmartPowerHardware:
     def __repr__(self) -> str:
         return str(self.__class__) + ": " + str(self.__dict__)
 
+
 ########### ERROR ###############
 
 
 class SmartPowerError(Exception):
-    LONG_PULSE_ERROR = '0x18;[0]'
-    POL_TIMEOUT_ERROR = '0x18;[0]'
-    POL_FAULT_ERROR = '0x18;[0]'
-    POL_PGOOD_ERROR = '0x18;[0]'
+    LONG_PULSE_ERROR = "0x18;[0]"
+    POL_TIMEOUT_ERROR = "0x18;[0]"
+    POL_FAULT_ERROR = "0x18;[0]"
+    POL_PGOOD_ERROR = "0x18;[0]"
 
     def __init__(self, message, error_code):
         super().__init__(message)
@@ -107,9 +123,10 @@ class SmartPowerFPGA:
             elapsed_time = time.time() - start_time  # Calculate the elapsed time
             if elapsed_time > 30:  # Raise an error if it takes longer than 30 seconds
                 raise SmartPowerError(
-                    "Boot up process took too long.", SmartPowerError.ERROR_CODE_1)
+                    "Boot up process took too long.", SmartPowerError.ERROR_CODE_1
+                )
             time.sleep(delay)
-            print(f'Checking Petalinux status: {self.sw.petalinux.status}')
+            print(f"Checking Petalinux status: {self.sw.petalinux.status}")
 
     def get_version(self):
         return self.sw.petalinux.version
@@ -117,8 +134,8 @@ class SmartPowerFPGA:
     @classmethod
     def from_json(cls):
         param = load_from_json()
-        hw = SmartPowerHardware(**param['SmartPowerHardware'])
-        sw = SmartPowerSoftware(Petalinux(param['SmartPowerSoftware']))
+        hw = SmartPowerHardware(**param["SmartPowerHardware"])
+        sw = SmartPowerSoftware(Petalinux(param["SmartPowerSoftware"]))
         return cls(hw, sw)
 
 

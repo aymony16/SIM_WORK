@@ -1,24 +1,19 @@
-from concurrent import futures
 import grpc
-import smp_pb2_grpc
+from concurrent import futures
 import smp_pb2
+import smp_pb2_grpc
 
 
-class SmartPowerService(smp_pb2_grpc.SmartPowerServiceServicer):
+class StatusCheckerServicer(smp_pb2_grpc.StatusCheckerServicer):
     def CheckStatus(self, request, context):
-        # Implement your logic here to check the status.
-        # This is just a placeholder implementation.
-        return smp_pb2.Response(response="Status OK")
-
-    def CheckTemperature(self, request, context):
-        # Implement your logic here to check the temperature.
-        # This is just a placeholder implementation.
-        return smp_pb2.Response(response="Temperature OK")
+        # Here you can implement the logic to check the status and return "booting", "running", or "error".
+        # For now, let's just return "running".
+        return smp_pb2.StatusReply(status="running")
 
 
 class SmartPowerClient:
-    def __init__(self, host='localhost', port=50051):
-        self.channel = grpc.insecure_channel(f'{host}:{port}')
+    def __init__(self, host="localhost", port=50051):
+        self.channel = grpc.insecure_channel(f"{host}:{port}")
         self.stub = smp_pb2_grpc.SmartPowerServiceStub(self.channel)
 
     def check_status(self):
@@ -29,13 +24,12 @@ class SmartPowerClient:
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    smp_pb2_grpc.add_SmartPowerServiceServicer_to_server(
-        SmartPowerService(), server)
-    server.add_insecure_port('[::]:50051')
+    smp_pb2_grpc.add_StatusCheckerServicer_to_server(StatusCheckerServicer(), server)
+    server.add_insecure_port("[::]:50051")
+    print("Starting server...")
     server.start()
-    print("SmartPowerService started")
     server.wait_for_termination()
 
 
-if __name__ == '__main__':
-    serve()
+if __name__ == "__main__":
+    SmartPowerClient().check_status()
